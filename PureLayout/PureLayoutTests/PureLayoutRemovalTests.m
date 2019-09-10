@@ -14,18 +14,6 @@
 
 @implementation PureLayoutRemovalTests
 
-- (void)setUp
-{
-    [super setUp];
-
-}
-
-- (void)tearDown
-{
-
-    [super tearDown];
-}
-
 /**
  Test the +[removeConstraint:] method on UIView.
  Test the case where we're removing a constraint that was added to the closest common superview of the two views it
@@ -88,7 +76,7 @@
  */
 - (void)testRemoveConstraints
 {
-    __NSArray_of(NSLayoutConstraint *) *constraints = [@[self.viewA, self.viewB, self.viewC, self.viewD] autoDistributeViewsAlongAxis:ALAxisHorizontal alignedTo:ALAttributeHorizontal withFixedSize:10.0];
+    PL__NSArray_of(NSLayoutConstraint *) *constraints = [@[self.viewA, self.viewB, self.viewC, self.viewD] autoDistributeViewsAlongAxis:ALAxisHorizontal alignedTo:ALAttributeHorizontal withFixedSize:10.0];
     
     NSUInteger constraintsCount = [self.containerView.constraints count];
     XCTAssert(constraintsCount > 0, @"containerView should have constraints added to it.");

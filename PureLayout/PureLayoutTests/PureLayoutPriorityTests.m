@@ -14,22 +14,10 @@
 
 @implementation PureLayoutPriorityTests
 
-- (void)setUp
-{
-    [super setUp];
-
-}
-
-- (void)tearDown
-{
-
-    [super tearDown];
-}
-
 /**
  Returns an array of the default priorities to test.
  */
-- (__NSArray_of(NSNumber *) *)defaultPriorities
+- (PL__NSArray_of(NSNumber *) *)defaultPriorities
 {
     return @[@(ALLayoutPriorityFittingSizeLevel), @(ALLayoutPriorityDefaultHigh), @(ALLayoutPriorityRequired), @(ALLayoutPriorityDefaultLow)];
 }
@@ -38,7 +26,7 @@
  A helper method that takes a block containing a call to the PureLayout API which adds one constraint,
  and calls -[assertConstraint:isAddedWithPriority:] for each of the default priorities.
  */
-- (void)assertConstraintIsAddedWithDefaultPriorities:(NSLayoutConstraint *(^)())block
+- (void)assertConstraintIsAddedWithDefaultPriorities:(NSLayoutConstraint *(^)(void))block
 {
     for (NSNumber *layoutPriority in [self defaultPriorities]) {
         [self assertConstraint:block isAddedWithPriority:[layoutPriority floatValue]];
@@ -49,7 +37,7 @@
  A helper method that takes a block containing one or more calls to the PureLayout API which add multiple
  constraints, and calls -[assertConstraints:areAddedWithPriority:] for each of the default priorities.
  */
-- (void)assertConstraintsAreAddedWithDefaultPriorities:(NSArray *(^)())block
+- (void)assertConstraintsAreAddedWithDefaultPriorities:(NSArray *(^)(void))block
 {
     for (NSNumber *layoutPriority in [self defaultPriorities]) {
         [self assertConstraints:block areAddedWithPriority:[layoutPriority floatValue]];
@@ -61,9 +49,9 @@
  and verifies that when the +[NSLayoutConstraint autoSetPriority:forConstraints:] method is used, this one constraint is
  added with the correct priority specified.
  */
-- (void)assertConstraint:(NSLayoutConstraint *(^)())block isAddedWithPriority:(ALLayoutPriority)priority
+- (void)assertConstraint:(NSLayoutConstraint *(^)(void))block isAddedWithPriority:(ALLayoutPriority)priority
 {
-    [self assertConstraints:^__NSArray_of(NSLayoutConstraint *) *{ return @[block()]; } areAddedWithPriority:priority];
+    [self assertConstraints:^PL__NSArray_of(NSLayoutConstraint *) *{ return @[block()]; } areAddedWithPriority:priority];
 }
 
 /**
@@ -71,9 +59,9 @@
  constraints, and verifies that when the +[NSLayoutConstraint autoSetPriority:forConstraints:] method is used,
  these constraints are added with the correct priority specified.
  */
-- (void)assertConstraints:(__NSArray_of(NSLayoutConstraint *) *(^)())block areAddedWithPriority:(ALLayoutPriority)priority
+- (void)assertConstraints:(PL__NSArray_of(NSLayoutConstraint *) *(^)(void))block areAddedWithPriority:(ALLayoutPriority)priority
 {
-    __block __NSArray_of(NSLayoutConstraint *) *constraints;
+    __block PL__NSArray_of(NSLayoutConstraint *) *constraints;
     [NSLayoutConstraint autoSetPriority:priority forConstraints:^{
         constraints = block();
     }];
@@ -88,7 +76,7 @@
  */
 - (void)testPriorityForCentering
 {
-    [self assertConstraintsAreAddedWithDefaultPriorities:^__NSArray_of(NSLayoutConstraint *) *{
+    [self assertConstraintsAreAddedWithDefaultPriorities:^PL__NSArray_of(NSLayoutConstraint *) *{
         return [self.viewA autoCenterInSuperview];
     }];
     
@@ -118,11 +106,11 @@
         return [self.viewB autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0.0 relation:NSLayoutRelationGreaterThanOrEqual];
     }];
     
-    [self assertConstraintsAreAddedWithDefaultPriorities:^__NSArray_of(NSLayoutConstraint *) *{
+    [self assertConstraintsAreAddedWithDefaultPriorities:^PL__NSArray_of(NSLayoutConstraint *) *{
         return [self.viewC autoPinEdgesToSuperviewEdgesWithInsets:ALEdgeInsetsZero];
     }];
     
-    [self assertConstraintsAreAddedWithDefaultPriorities:^__NSArray_of(NSLayoutConstraint *) *{
+    [self assertConstraintsAreAddedWithDefaultPriorities:^PL__NSArray_of(NSLayoutConstraint *) *{
         return [self.viewD autoPinEdgesToSuperviewEdgesWithInsets:ALEdgeInsetsMake(5.5, -50.0, 42.6, 860.9) excludingEdge:ALEdgeTrailing];
     }];
 }
@@ -168,7 +156,7 @@
  */
 - (void)testPriorityForMatchingDimensions
 {
-    [self assertConstraintsAreAddedWithDefaultPriorities:^__NSArray_of(NSLayoutConstraint *) *{
+    [self assertConstraintsAreAddedWithDefaultPriorities:^PL__NSArray_of(NSLayoutConstraint *) *{
         return [self.viewA autoSetDimensionsToSize:CGSizeMake(90, 180)];
     }];
     
@@ -212,19 +200,19 @@
  */
 - (void)testPriorityForConstrainingMultipleViews
 {
-    [self assertConstraintsAreAddedWithDefaultPriorities:^__NSArray_of(NSLayoutConstraint *) *{
+    [self assertConstraintsAreAddedWithDefaultPriorities:^PL__NSArray_of(NSLayoutConstraint *) *{
         return [self.viewArray autoAlignViewsToEdge:ALEdgeBottom];
     }];
     
-    [self assertConstraintsAreAddedWithDefaultPriorities:^__NSArray_of(NSLayoutConstraint *) *{
+    [self assertConstraintsAreAddedWithDefaultPriorities:^PL__NSArray_of(NSLayoutConstraint *) *{
         return [self.viewArray autoAlignViewsToAxis:ALAxisVertical];
     }];
     
-    [self assertConstraintsAreAddedWithDefaultPriorities:^__NSArray_of(NSLayoutConstraint *) *{
+    [self assertConstraintsAreAddedWithDefaultPriorities:^PL__NSArray_of(NSLayoutConstraint *) *{
         return [self.viewArray autoMatchViewsDimension:ALDimensionWidth];
     }];
     
-    [self assertConstraintsAreAddedWithDefaultPriorities:^__NSArray_of(NSLayoutConstraint *) *{
+    [self assertConstraintsAreAddedWithDefaultPriorities:^PL__NSArray_of(NSLayoutConstraint *) *{
         return [self.viewArray autoSetViewsDimension:ALDimensionHeight toSize:10.0];
     }];
 }
@@ -234,19 +222,19 @@
  */
 - (void)testPriorityForDistributingMultipleViews
 {
-    [self assertConstraintsAreAddedWithDefaultPriorities:^__NSArray_of(NSLayoutConstraint *) *{
+    [self assertConstraintsAreAddedWithDefaultPriorities:^PL__NSArray_of(NSLayoutConstraint *) *{
         return [self.viewArray autoDistributeViewsAlongAxis:ALAxisHorizontal alignedTo:ALAttributeBottom withFixedSize:25.0];
     }];
     
-    [self assertConstraintsAreAddedWithDefaultPriorities:^__NSArray_of(NSLayoutConstraint *) *{
+    [self assertConstraintsAreAddedWithDefaultPriorities:^PL__NSArray_of(NSLayoutConstraint *) *{
         return [self.viewArray autoDistributeViewsAlongAxis:ALAxisVertical alignedTo:ALAttributeRight withFixedSize:5.0 insetSpacing:NO];
     }];
     
-    [self assertConstraintsAreAddedWithDefaultPriorities:^__NSArray_of(NSLayoutConstraint *) *{
+    [self assertConstraintsAreAddedWithDefaultPriorities:^PL__NSArray_of(NSLayoutConstraint *) *{
         return [self.viewArray autoDistributeViewsAlongAxis:ALAxisVertical alignedTo:ALAttributeLeading withFixedSpacing:0.0];
     }];
     
-    [self assertConstraintsAreAddedWithDefaultPriorities:^__NSArray_of(NSLayoutConstraint *) *{
+    [self assertConstraintsAreAddedWithDefaultPriorities:^PL__NSArray_of(NSLayoutConstraint *) *{
         return [self.viewArray autoDistributeViewsAlongAxis:ALAxisHorizontal alignedTo:ALAttributeHorizontal withFixedSpacing:899.5 insetSpacing:NO];
     }];
 }

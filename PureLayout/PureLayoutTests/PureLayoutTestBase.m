@@ -10,7 +10,7 @@
 
 @implementation PureLayoutTestBase
 
-- (__NSArray_of(ALView *) *)viewArray
+- (PL__NSArray_of(ALView *) *)viewArray
 {
     return @[self.viewA, self.viewB, self.viewC, self.viewD];
 }
@@ -22,12 +22,6 @@
     self.containerView = [[ALView alloc] initWithFrame:CGRectMake(0.0, 0.0, kContainerViewWidth, kContainerViewHeight)];
     
     [self setupViewHierarchy];
-}
-
-- (void)tearDown
-{
-    
-    [super tearDown];
 }
 
 /**

@@ -38,7 +38,7 @@
 - (void)updateViewConstraints
 {
     if (!self.didSetupConstraints) {
-        NSAssert(__PureLayout_MinSysVer_iOS_8_0, @"This demo requires iOS 8.0 or higher to run.");
+        NSAssert(PL__PureLayout_MinSysVer_iOS_8_0, @"This demo requires iOS 8.0 or higher to run.");
         
         // Before layout margins were introduced, this is a typical way of giving a subview some padding from its superview's edges
         [self.blueView autoPinToTopLayoutGuideOfViewController:self withInset:10.0];
@@ -55,7 +55,7 @@
         [self.yellowView autoPinEdgeToSuperviewMargin:ALEdgeLeft];
         [self.yellowView autoPinEdgeToSuperviewMargin:ALEdgeRight];
         
-        // By aligning the yellowView to its superview's horiztonal margin axis, the yellowView will be positioned with its horizontal axis
+        // By aligning the yellowView to its superview's horizontal margin axis, the yellowView will be positioned with its horizontal axis
         // in the middle of the redView's top and bottom margins (causing it to be slightly closer to the top of the redView, since the
         // redView has a much larger bottom margin than top margin).
         [self.yellowView autoAlignAxisToSuperviewMarginAxis:ALAxisHorizontal];
